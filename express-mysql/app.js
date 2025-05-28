@@ -31,7 +31,7 @@ app.use(session({
   store: new session.MemoryStore,
   saveUnitialized: true,
   resave: 'true',
-  secret: 'secret'
+  secret: 'rahasia123'
 }))
 
 app.use(flash())

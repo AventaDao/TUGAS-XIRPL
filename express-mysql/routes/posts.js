@@ -9,7 +9,7 @@ var connection = require('../library/database');
  */
 router.get('/', function (req, res, next) {
     // query
-    connection.query('SELECT * FROM posts ORDER BY id desc', function (err, rows) {
+    connection.query('SELECT * FROM tbl_08_post ORDER BY id desc', function (err, rows) {
         if (err) {
             req.flash('error', err);
             res.render('posts', {
@@ -69,7 +69,7 @@ router.post('/store', function (req, res, next) {
         };
 
         // insert query
-        connection.query('INSERT INTO posts SET ?', formData, function (err, result) {
+        connection.query('INSERT INTO tbl_08_post SET ?', formData, function (err, result) {
             if (err) {
                 req.flash('error', err);
                 // render to add.ejs
@@ -91,7 +91,7 @@ router.post('/store', function (req, res, next) {
 router.get('/edit/:id', function (req, res, next) {
     let id = req.params.id;
 
-    connection.query('SELECT * FROM posts WHERE id = ' + id, function (err, rows, fields) {
+    connection.query('SELECT * FROM tbl_08_post WHERE id = ' + id, function (err, rows, fields) {
         if (err) throw err;
 
         // if user not found
@@ -146,7 +146,7 @@ router.post('/update/:id', function (req, res, next) {
         };
 
         // update query
-        connection.query('UPDATE posts SET ? WHERE id = ' + id, formData, function (err, result) {
+        connection.query('UPDATE tbl_08_post SET ? WHERE id = ' + id, formData, function (err, result) {
             if (err) {
                 req.flash('error', err);
                 res.render('posts/edit', {
@@ -161,5 +161,20 @@ router.post('/update/:id', function (req, res, next) {
         });
     }
 });
+
+router.get('/delete/(:id)', function(req, res, next) {
+
+    let id = req.params.id;
+
+    connection.query('DELETE FROM tbl_08_post WHERE id = ' + id, function(err, result) {
+        if (err) {
+            req.flash('error', err)
+            res.redirect('/posts')
+        } else {
+            req.flash('success', 'Data berhasil dihapus!')
+            res.redirect('/posts')
+        }
+    })
+})
 
 module.exports = router;
